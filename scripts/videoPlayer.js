@@ -13,8 +13,14 @@ export const videoPLayerInit = () => {
    const videoProgress = document.querySelector('.video-progress');
    const videoTimePassed = document.querySelector('.video-time__passed');
    const videoTimeTotal = document.querySelector('.video-time__total');
+   const videoVolume = document.querySelector('.video-volume');
+   const videoFullscreen = document.querySelector('.video-fullscreen');
 
-   
+
+   videoFullscreen.addEventListener('click', () => {
+      videoPlayer.requestFullscreen();
+   })
+
    const toggleIcon = () => {
       if(videoPlayer.paused) {
          videoButtonPlay.classList.remove('fa-pause');
@@ -26,7 +32,8 @@ export const videoPLayerInit = () => {
       }
    }
    
-   const togglePlay = () => {
+   const togglePlay = (e) => {
+      e.preventDefault();
       if(videoPlayer.paused) {
          videoPlayer.play();
       } else {
@@ -41,9 +48,23 @@ export const videoPLayerInit = () => {
    }
 
    const addZero = n => n < 10 ? '0' + n : n;
+
+   const changeValue = () => {
+      const valueVolume = videoVolume.value;
+      videoPlayer.volume = valueVolume / 100;
+   };
    
    videoPlayer.addEventListener('click', togglePlay);
    videoButtonPlay.addEventListener('click', togglePlay);
+
+   // videoPlayer.addEventListener('событие fullscreen', () => {
+   //    if ('экран fullscreen') {
+   //       videoPlayer.removeEventListener('click', togglePley);
+
+   //    } else {
+   //       videoPlayer.addEventListener('click', togglePlay);
+   //    }
+   // })
 
    videoPlayer.addEventListener('play', toggleIcon);
    videoPlayer.addEventListener('pause', toggleIcon);
@@ -69,11 +90,18 @@ export const videoPLayerInit = () => {
 
    });
 
-   videoProgress.addEventListener('change', () => {
+   videoProgress.addEventListener('input', () => {
       const duration = videoPlayer.duration;
       const value = videoProgress.value;
 
       videoPlayer.currentTime = (value * duration) / 100;
    });
-};
 
+   videoVolume.addEventListener('input',  changeValue); 
+
+   videoPlayer.addEventListener('volumechange', () => {
+      videoVolume.value = Math.round(videoPlayer.volume * 100);
+   })
+
+   changeValue();
+}
