@@ -1,16 +1,23 @@
-export const radioPLayerInit = () => {
+export const radioPlayerInit = () => {
    const radio = document.querySelector('.radio');
    const radioCoverImg = document.querySelector('.radio-cover__img');
    const radioHeaderBig = document.querySelector('.radio-header__big');
    const radioNavigation = document.querySelector('.radio-navigation');
    const radioItem = document.querySelectorAll('.radio-item');
    const radioStop = document.querySelector('.radio-stop');
+   const radioVolume = document.querySelector('.radio-volume');
+   const radioMute = document.querySelector('.radio-mute');
 
+   
+   
    const audio = new Audio();
    audio.type = 'audio/aac';
 
+   const prevVolume = audio.volume;
+
    radioStop.disabled = true;
 
+   
    const changeIconPlay = () => {
       if (audio.paused) {
          radio.classList.remove('play');
@@ -51,5 +58,22 @@ export const radioPLayerInit = () => {
          audio.pause();
       }
       changeIconPlay();
-   })
+   });
+
+   radioVolume.addEventListener('input', () => {
+      audio.volume =  radioVolume.value / 100;
+      audio.muted = false;
+
+   });
+
+   radioMute.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+   });
+
+   radioVolume.value = audio.volume * 100;
+
+   return () => {
+      audio.pause();
+      changeIconPlay();
+   }
 }

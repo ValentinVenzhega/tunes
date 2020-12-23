@@ -1,3 +1,3 @@
-export const musicPLayerInit = () => {
+export const musicPlayerInit = () => {
    console.log('music init');
 }

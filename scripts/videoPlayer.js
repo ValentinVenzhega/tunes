@@ -1,4 +1,4 @@
-export const videoPLayerInit = () => {
+export const videoPlayerInit = () => {
 // video-player
 // video-button__play
 // video-button__stop
@@ -19,6 +19,14 @@ export const videoPLayerInit = () => {
 
    videoFullscreen.addEventListener('click', () => {
       videoPlayer.requestFullscreen();
+   });
+
+   videoPlayer.addEventListener('fullscreenchange', () => {
+      if ( document.Fullscreen) {
+         videoPlayer.controls = true;
+      } else {
+         videoPlayer.controls = false;
+      }
    })
 
    const toggleIcon = () => {
@@ -104,4 +112,10 @@ export const videoPLayerInit = () => {
    })
 
    changeValue();
+
+
+   return () => {
+      videoPlayer.pause();
+      toggleIcon();
+   };
 }
